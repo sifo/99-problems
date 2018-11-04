@@ -1,7 +1,6 @@
 
 object Main {
 
-
   def main(args: Array[String]) {
     val l = List("a", "a", "a", "a", "b", "c", "c", "a", "a", "d", "e", "e", "e" ,"e")
     println(compress(l))
@@ -14,5 +13,4 @@ object Main {
       case a :: b :: tail => if(a == b) compress(b :: tail) else a :: compress(b :: tail)
     }
   }
-
 }
