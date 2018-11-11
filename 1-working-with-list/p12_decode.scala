@@ -1,3 +1,4 @@
+import scala.annotation.tailrec
 
 object Main {
 
@@ -8,6 +9,7 @@ object Main {
   def main(args: Array[String]) {
     val l = List(Many(4, "a"), One("b"), Many(2, "c"), Many(2, "a"), One("b"), Many(4, "e"))
     println(decode(l))
+    println(decode2(l))
   }
 
   def decode[T](l: List[Node[T]]): List[T] = {
@@ -16,8 +18,33 @@ object Main {
       case hd :: tail =>
         hd match {
           case One(e) => e :: decode(tail)
-          case Many(i, e) => if(i > 2) e :: decode(Many(i-1, e) :: tail) else e :: e :: decode(tail)
+          case Many(i, e) =>
+            if(i > 2)
+              e :: decode(Many(i-1, e) :: tail)
+            else
+              e :: e :: decode(tail)
         }
     }
+  }
+
+  def decode2[T](list: List[Node[T]]): List[T] = {
+    @tailrec
+    def aux(l: List[Node[T]], acc: List[T]): List[T] = {
+      l match {
+        case Nil => acc
+        case hd :: tail => {
+          hd match {
+            case One(e) => aux(tail, e :: acc)
+            case Many(i, e) => {
+              if(i > 2)
+                aux(Many(i-1, e) :: tail, e :: acc)
+              else
+                aux(tail, e :: e :: acc)
+            }
+          }
+        }
+      }
+    }
+    aux(list, List()).reverse
   }
 }
