@@ -5,6 +5,12 @@ object Main {
   sealed abstract class Node[T]
   case class One[T](e: T) extends Node[T]
   case class Many[T](i: Int, e: T) extends Node[T]
+  object Many {
+    def apply[T](i: Int, e: T) = {
+      require(i >= 2)
+      new Many(i, e)
+    }
+  }
 
   def main(args: Array[String]) {
     val l = List(Many(4, "a"), One("b"), Many(2, "c"), Many(2, "a"), One("b"), Many(4, "e"))
