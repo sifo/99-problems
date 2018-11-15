@@ -1,3 +1,4 @@
+import scala.annotation.tailrec
 
 object Main {
 
@@ -7,6 +8,7 @@ object Main {
   }
 
   def dropEveryNth[T](list: List[T], n: Int): List[T] = {
+    @tailrec
     def aux(l: List[T], c: Int, acc: List[T]): List[T] = {
       l match {
         case Nil => acc
