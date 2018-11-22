@@ -7,6 +7,11 @@ object Main {
     println(insertAt("alpha", 3, l))
     println(insertAt("alpha", 4, l))
     println(insertAt("alpha", 6, l))
+    println(insertAt("alpha", 1, l))
+    println(insertAt("alpha", 0, l))
+    println(insertAt("alpha", 3, l))
+    println(insertAt("alpha", 4, l))
+    println(insertAt("alpha", 6, l))
   }
 
   def insertAt[T](e: T, index: Int, list: List[T]): List[T] = {
@@ -21,5 +26,15 @@ object Main {
       }
     }
     aux(list, index, List())
+  }
+  def insertAt2[T](e: T, index: Int, list: List[T]): List[T] = {
+    list match {
+      case Nil => list
+      case hd :: tail =>
+        if(index == 0)
+          e :: list
+        else
+          hd :: insertAt2(e, index-1, tail)
+    }
   }
 }
