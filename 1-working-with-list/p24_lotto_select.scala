@@ -2,9 +2,9 @@
 object Main {
 
   def main(args: Array[String]) {
-    val l = List("a", "b", "c", "d", "e", "f", "g", "h")
-    println(lottoSelect(l, 3))
+    println(lottoSelect(6, 49))
   }
+
 
   def extractAt[T](index: Int, list: List[T]): (List[T], Option[T]) = {
     def aux(l: List[T], c: Int, acc: List[T]): (List[T], Option[T]) = {
@@ -20,11 +20,30 @@ object Main {
     aux(list, index, List())
   }
 
-  def lottoSelect[T](l: List[T], n: Int): List[T] = {
+  def randSelect[T](l: List[T], i: Int): List[T] = {
     val r = (new scala.util.Random).nextInt(l.length)
-    if(n > 0)
-      l(r) :: lottoSelect(extractAt(r, l)._1, n-1)
-    else
-      List()
+    if(i > 0)
+      extractAt(r, l) match {
+        case (_, None) => List()
+        case (rest, Some(e)) => e :: randSelect(rest, i-1)
+      }
+      else
+        List()
+  }
+
+  def range(a: Int, b: Int): List[Int] = {
+    def aux(cur: Int, acc: List[Int]): List[Int] = {
+      if(cur < b)
+        aux(cur+1, cur :: acc)
+      else if(b < cur)
+        aux(cur-1, cur :: acc)
+      else
+        (cur :: acc).reverse
+    }
+    aux(a, List())
+  }
+
+  def lottoSelect(n: Int, m: Int): List[Int] = {
+    randSelect(range(1, m), n)
   }
 }
